@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "Inria";
+    src: url('../fonts/InriaSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url('../fonts/Roboto.ttf');
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url('../fonts/Poppins-Regular.ttf');
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url('../fonts/Inter.ttf');
+}
