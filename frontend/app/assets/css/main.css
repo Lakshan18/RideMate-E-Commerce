@@ -19,3 +19,8 @@
     font-family: "Inter";
     src: url('../fonts/Inter.ttf');
 }
+
+@font-face {
+    font-family: "Quicksand";
+    src: url('../fonts/Quicksand-Regular.ttf');
+}
