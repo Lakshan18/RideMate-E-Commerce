@@ -14,7 +14,7 @@ function startAutoplay() {
     stopAutoplay();
     timer = window.setInterval(() => {
         currentIndex.value = (currentIndex.value + 1) % slides.length;
-    }, 5000);
+    }, 6000);
 }
 
 function stopAutoplay() {
@@ -49,11 +49,12 @@ onBeforeUnmount(() => stopAutoplay());
             </div>
         </div>
 
-        <div class="w-full min-h-screen my-10 relative overflow-hidden">
+        <div class="w-full min-h-screen mt-10 relative overflow-hidden">
             <div class="w-[100%] h-[92vh] relative">
                 <Motion v-for="(slide, idx) in slides" :key="slide.id" tag="div"
                     class="absolute inset-0 bg-cover bg-center" :style="{ backgroundImage: `url(${slide.image})` }"
-                    :initial="{ opacity: 0 }" :animate="idx === currentIndex ? { opacity: 1 } : { opacity: 0 }"
+                    :initial="{ opacity: 0 }" 
+                    :animate="idx === currentIndex ? { opacity: 1 } : { opacity: 0 }"
                     :transition="{ duration: 1.2, easing: 'ease-in-out' }">
                     <div class="absolute inset-0 bg-black/60"></div>
 
