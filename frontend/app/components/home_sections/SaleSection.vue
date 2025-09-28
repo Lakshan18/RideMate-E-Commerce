@@ -27,7 +27,6 @@ const sales = saleData;
                             </span>
                         </div>
 
-
                         <button
                             class="w-[100px] rounded-sm bg-[#E78700] text-white font-medium font-[Roboto] px-2.5 py-2">Shop
                             Now</button>

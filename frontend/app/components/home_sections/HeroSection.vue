@@ -2,9 +2,14 @@
 import { styles } from '~/assets/api-styles/styles';
 import { BsCartCheck } from '@kalimahapps/vue-icons';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { createRouter, createWebHistory } from 'vue-router';
 import { Motion } from '@motionone/vue';
+import { useRouter } from 'vue-router';
 
 import { heroCaraouselData } from '~/assets/data/caraousel';
+
+const router = useRouter();
+
 
 const slides = heroCaraouselData;
 const currentIndex = ref(0);
@@ -26,7 +31,11 @@ function stopAutoplay() {
 
 function goTo(index: number) {
     currentIndex.value = index;
-    startAutoplay(); 
+    startAutoplay();
+}
+
+function goToAuth() {
+    router.push({ name: 'Authentication' });
 }
 
 onMounted(() => startAutoplay());
@@ -44,7 +53,7 @@ onBeforeUnmount(() => stopAutoplay());
                     class="w-[100px] text-white bg-[#E2A152] font-normal cursor-pointer duration-300 ease-in-out hover:bg-[#825844] font-[Roboto] py-3 px-4 rounded-r-3xl">Search</button>
             </div>
             <div class="w-fit flex flex-row items-center justify-between gap-x-5">
-                <span :class="[styles.nav_topText]">Login/Register</span>
+                <span :class="[styles.nav_topText]" @click="goToAuth">Login/Register</span>
                 <BsCartCheck class="w-10 h-10 text-[#c47514]" />
             </div>
         </div>
@@ -53,8 +62,7 @@ onBeforeUnmount(() => stopAutoplay());
             <div class="w-[100%] h-[92vh] relative">
                 <Motion v-for="(slide, idx) in slides" :key="slide.id" tag="div"
                     class="absolute inset-0 bg-cover bg-center" :style="{ backgroundImage: `url(${slide.image})` }"
-                    :initial="{ opacity: 0 }" 
-                    :animate="idx === currentIndex ? { opacity: 1 } : { opacity: 0 }"
+                    :initial="{ opacity: 0 }" :animate="idx === currentIndex ? { opacity: 1 } : { opacity: 0 }"
                     :transition="{ duration: 1.2, easing: 'ease-in-out' }">
                     <div class="absolute inset-0 bg-black/60"></div>
 

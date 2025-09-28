@@ -23,6 +23,7 @@
     "@unhead/vue": "^2.0.17",
     "better-sqlite3": "^12.4.1",
     "eslint": "^9.36.0",
+    "gsap": "^3.13.0",
     "motion": "^12.23.22",
     "nuxt": "^4.1.2",
     "oh-vue-icons": "^1.0.0-rc3",
