@@ -1,38 +1,3 @@
-<!-- <script setup>
-import { AnOutlinedUser, MdOutlinedEmail, BsTelephone, AnOutlinedLock, DeGoogleOriginal, DeFacebookPlain, DeLinkedinOriginal } from '@kalimahapps/vue-icons';
-import authBg from '~/assets/images/auth_bg.png';
-import { ref, onMounted, watch, nextTick } from 'vue';
-import { Motion } from '@motionone/vue';
-import gsap from 'gsap';
-
-definePageMeta({
-    layout: false
-});
-
-const isLogin = ref(true);
-
-const toggleForm = () => {
-    isLogin.value = !isLogin.value;
-};
-
-const animateForm = async () => {
-    await nextTick();
-    if (!formRef.value) return;
-
-    gsap.fromTo(
-        formRef.value,
-        { x: isLogin.value ? -200 : 200, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
-    );
-};
-
-onMounted(() => animateForm());
-
-watch(isLogin, () => animateForm());
-
-</script> -->
-
-
 <script setup>
 import { AnOutlinedUser, MdOutlinedEmail, BsTelephone, AnOutlinedLock, DeGoogleOriginal, DeFacebookPlain, DeLinkedinOriginal } from '@kalimahapps/vue-icons';
 import authBg from '~/assets/images/auth_bg.png';

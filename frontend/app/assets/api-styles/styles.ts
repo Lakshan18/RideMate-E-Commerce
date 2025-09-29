@@ -4,6 +4,7 @@ export interface Styles {
    subText_csl:string;
    mainText_csl:string;
    descText_csl:string;
+   main_headingText:string;
 }
 
 
@@ -13,4 +14,5 @@ export const styles : Styles = {
   subText_csl:"text-[#fff] text-[24px] font-[Quicksand] font-light",
   mainText_csl:"text-[#fff] text-[40px] font-black font-[Poppins] max-w-xl pt-2",
   descText_csl:"text-[#fff] text-[18px] font-light font-[Quicksand] max-w-xl pt-5",
+  main_headingText:"text-[#000] text-[30px] font-[Inter]",
 }as const;

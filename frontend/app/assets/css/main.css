@@ -24,3 +24,8 @@
     font-family: "Quicksand";
     src: url('../fonts/Quicksand-Regular.ttf');
 }
+
+@font-face {
+    font-family: "Quant";
+    src: url('../fonts/Quantico-Regular.ttf');
+}
