@@ -5,7 +5,7 @@ export interface Offers {
     desc: string;
     product_img: string;
     priceTitle: string;
-    price: string;
+    price: number;
     endDate:string;
 }
 
@@ -21,7 +21,7 @@ export const offersData: Offers[] = [
         desc: "High-performance brake pads for all vehicles – precision tested for maximum safety.",
         product_img: product1,
         priceTitle: "From",
-        price: "14500",
+        price: 14500,
         endDate: "2025-10-05T23:59:59",
     },
     {
@@ -31,7 +31,7 @@ export const offersData: Offers[] = [
         desc: "Premium synthetic oils for smoother rides and longer engine life.",
         product_img: product2,
         priceTitle: "Up To",
-        price: "4500",
+        price: 4500,
         endDate: "2025-10-10T18:00:00",
     },
     {
@@ -41,7 +41,7 @@ export const offersData: Offers[] = [
         desc: "Reliable, maintenance-free car batteries designed for every journey.",
         product_img: product3,
         priceTitle:"Up To",
-        price: "3500",
+        price: 3500,
         endDate: "2025-10-15T12:00:00",
     }
 ];
