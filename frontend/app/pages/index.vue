@@ -5,6 +5,8 @@ import HeroSection from '~/components/home_sections/HeroSection.vue';
 import Pop_Category from '~/components/home_sections/Pop_Category.vue';
 import SaleSection from '~/components/home_sections/SaleSection.vue';
 import ProductSection from '~/components/home_sections/ProductSection.vue';
+import PremiumItem_Banner from '~/components/home_sections/PremiumItem_Banner.vue';
+import BlogSection from '~/components/home_sections/BlogSection.vue';
 
 </script>
 
@@ -15,6 +17,8 @@ import ProductSection from '~/components/home_sections/ProductSection.vue';
     <SaleSection />
     <Pop_Category />
     <Devide_OfferBar />
-    <ProductSection/>
+    <ProductSection />
+    <PremiumItem_Banner />
+    <BlogSection/>
   </div>
 </template>
