@@ -8,6 +8,7 @@ import ProductSection from '~/components/home_sections/ProductSection.vue';
 import PremiumItem_Banner from '~/components/home_sections/PremiumItem_Banner.vue';
 import ExclusiveDisc from '~/components/home_sections/ExclusiveDisc.vue';
 import WelcomeDeals from '~/components/home_sections/WelcomeDeals.vue';
+import ServiceBar from '~/components/home_sections/ServiceBar.vue';
 
 </script>
 
@@ -22,5 +23,6 @@ import WelcomeDeals from '~/components/home_sections/WelcomeDeals.vue';
     <ProductSection />
     <PremiumItem_Banner />
     <ExclusiveDisc/>
+    <ServiceBar/>
   </div>
 </template>
