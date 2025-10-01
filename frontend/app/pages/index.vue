@@ -6,7 +6,8 @@ import Pop_Category from '~/components/home_sections/Pop_Category.vue';
 import SaleSection from '~/components/home_sections/SaleSection.vue';
 import ProductSection from '~/components/home_sections/ProductSection.vue';
 import PremiumItem_Banner from '~/components/home_sections/PremiumItem_Banner.vue';
-import BlogSection from '~/components/home_sections/BlogSection.vue';
+import ExclusiveDisc from '~/components/home_sections/ExclusiveDisc.vue';
+import WelcomeDeals from '~/components/home_sections/WelcomeDeals.vue';
 
 </script>
 
@@ -15,10 +16,11 @@ import BlogSection from '~/components/home_sections/BlogSection.vue';
     <HeroSection />
     <BadgeRowSection />
     <SaleSection />
+    <WelcomeDeals/>
     <Pop_Category />
     <Devide_OfferBar />
     <ProductSection />
     <PremiumItem_Banner />
-    <BlogSection/>
+    <ExclusiveDisc/>
   </div>
 </template>

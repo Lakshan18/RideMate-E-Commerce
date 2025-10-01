@@ -6,6 +6,8 @@ export interface Products {
     p_rating: number;
     p_price: number;
     p_feature: string;
+    p_discount?:number;
+    is_welcDeal?:boolean;
 }
 
 import product1 from '~/assets/images/products/valvoline_4_73L.png';
@@ -29,6 +31,7 @@ export const productData: Products[] = [
         p_rating: 4,
         p_price: 5800,
         p_feature: "SALE",
+        is_welcDeal:true,
     },
     {
         id: 2,
@@ -38,6 +41,7 @@ export const productData: Products[] = [
         p_rating: 4,
         p_price: 7800,
         p_feature: "SALE",
+        p_discount:45,
     },
     {
         id: 3,
@@ -56,6 +60,7 @@ export const productData: Products[] = [
         p_rating: 4,
         p_price: 12100,
         p_feature: "SALE",
+        p_discount:45,
     },
     {
         id: 5,
@@ -65,6 +70,8 @@ export const productData: Products[] = [
         p_rating: 4,
         p_price: 4800,
         p_feature: "SALE",
+        p_discount:40,
+        is_welcDeal:true,
     },
     {
         id: 6,
@@ -74,6 +81,7 @@ export const productData: Products[] = [
         p_rating: 4,
         p_price: 10000,
         p_feature: "SALE",
+        is_welcDeal:true,
     },
     {
         id: 7,
@@ -83,6 +91,7 @@ export const productData: Products[] = [
         p_rating: 5,
         p_price: 45000,
         p_feature: "LATEST",
+        p_discount:50,
     },
     {
         id: 8,
@@ -110,5 +119,7 @@ export const productData: Products[] = [
         p_rating: 4,
         p_price: 3000,
         p_feature: "LATEST",
+        p_discount:50,
+        is_welcDeal:true,
     }
 ];

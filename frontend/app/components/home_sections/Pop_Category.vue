@@ -7,7 +7,7 @@ import { categoryData, type Category } from '~/assets/data/categories_data';
 </script>
 
 <template>
-    <div class="w-full relative py-16">
+    <div class="w-full relative pt-12 pb-16">
         <div class="w-full flex flex-col items-start">
             <div class="w-fit flex flex-row items-center gap-2">
                 <span :class="[styles.main_headingText, 'font-bold']">POPULAR</span>
