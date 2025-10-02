@@ -30,11 +30,11 @@ export function useAuth() {
         }
     };
 
-    const register = async (name: string, email: string, password: string) => {
+    const register = async (name: string, email: string, mobile: string, password: string) => {
         loading.value = true;
         error.value = null;
         try {
-            const res = await axios.post(`${API_URL}/register`, { name, email, password });
+            const res = await axios.post(`${API_URL}/register`, { name, email, mobile, password });
             token.value = res.data.access_token;
             localStorage.setItem("token", token.value ?? "");
             return true;

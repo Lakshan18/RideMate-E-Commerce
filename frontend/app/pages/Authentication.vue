@@ -32,6 +32,7 @@ const { login, register, loading, error } = useAuth();
 const email = ref("");
 const password = ref("");
 const name = ref("");
+const mobile = ref("");
 
 const loginProcess = async () => {
     const success = await login(email.value, password.value);
@@ -43,9 +44,8 @@ const loginProcess = async () => {
     }
 };
 
-// For register
 const registerProcess = async () => {
-    const success = await register(name.value, email.value, password.value);
+    const success = await register(name.value, email.value, mobile.value, password.value);
     if (success) {
         alert("Registration successful!");
         toggleForm();
@@ -78,7 +78,7 @@ const registerProcess = async () => {
                             <div class="relative w-full">
                                 <MdOutlinedEmail
                                     class="absolute left-3 top-1/2 -translate-y-1/2 text-[#CB9A6F] w-5 h-5" />
- 
+
                                 <input type="email" v-model="email"
                                     class="w-full py-2 pl-10 rounded-sm font-normal bg-[rgba(199,141,80,0.19)] border outline-none border-[#D3800D] px-3 placeholder-[#CB9A6F]"
                                     placeholder="Enter email address" />
@@ -168,7 +168,7 @@ const registerProcess = async () => {
                             <div class="relative w-full">
                                 <BsTelephone class="absolute left-3 top-1/2 -translate-y-1/2 text-[#CB9A6F] w-5 h-5" />
 
-                                <input type="text" 
+                                <input type="text" v-model="mobile"
                                     class="w-full py-2 pl-10 rounded-sm font-normal bg-[rgba(199,141,80,0.19)] border outline-none border-[#D3800D] px-3 placeholder-[#CB9A6F]"
                                     placeholder="Enter mobile number" />
                             </div>
