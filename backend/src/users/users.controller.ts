@@ -1,23 +1,20 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post } from "@nestjs/common";
-import { UserService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { UsersService } from "./users.service";
 
 @Controller('user')
 export class UserController {
-    constructor(private userService: UserService) { }
+    constructor(private userService: UsersService) { }
 
     @Post()
     create(@Body() dto: CreateUserDto) {
-        return this.userService.create(dto);
+        if (!dto.name || !dto.email || !dto.password) {
+            throw new Error("Missing required user fields: name, email, or password");
+        }
+        return this.userService.createUser(dto.name, dto.email, dto.password);
     }
-
-    @Get()
-    findAll() {
-        return this.userService.findAll();
-    }
-
     @Get(':id')
-    findOne(@Param('id', ParseIntPipe) id: number) {
-        return this.userService.findOne(id);
+    findByEmail(@Param('email') email: string) {
+        return this.userService.findByEmail(email);
     }
 }

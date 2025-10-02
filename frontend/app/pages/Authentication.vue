@@ -8,6 +8,8 @@ definePageMeta({
 
 import { ref, nextTick } from 'vue';
 import gsap from 'gsap';
+import { useAuth } from '~/composables/useAuth';
+import { navigateTo } from '#app';
 
 const isLogin = ref(true);
 const loginRef = ref(null);
@@ -24,6 +26,34 @@ const toggleForm = async () => {
     const newForm = isLogin.value ? loginRef.value : registerRef.value;
     gsap.fromTo(newForm, { x: isLogin.value ? -200 : 200, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power2.out' });
 };
+
+const { login, register, loading, error } = useAuth();
+
+const email = ref("");
+const password = ref("");
+const name = ref("");
+
+const loginProcess = async () => {
+    const success = await login(email.value, password.value);
+    if (success) {
+        alert("Login successful!");
+        navigateTo('/');
+    } else {
+        alert(error.value);
+    }
+};
+
+// For register
+const registerProcess = async () => {
+    const success = await register(name.value, email.value, password.value);
+    if (success) {
+        alert("Registration successful!");
+        toggleForm();
+    } else {
+        alert(error.value);
+    }
+};
+
 </script>
 
 <template>
@@ -48,8 +78,8 @@ const toggleForm = async () => {
                             <div class="relative w-full">
                                 <MdOutlinedEmail
                                     class="absolute left-3 top-1/2 -translate-y-1/2 text-[#CB9A6F] w-5 h-5" />
-
-                                <input type="email"
+ 
+                                <input type="email" v-model="email"
                                     class="w-full py-2 pl-10 rounded-sm font-normal bg-[rgba(199,141,80,0.19)] border outline-none border-[#D3800D] px-3 placeholder-[#CB9A6F]"
                                     placeholder="Enter email address" />
                             </div>
@@ -61,7 +91,7 @@ const toggleForm = async () => {
                                 <AnOutlinedLock
                                     class="absolute left-3 top-1/2 -translate-y-1/2 text-[#CB9A6F] w-5 h-5" />
 
-                                <input type="password"
+                                <input type="password" v-model="password"
                                     class="w-full py-2 pl-10 rounded-sm font-normal bg-[rgba(199,141,80,0.19)] border outline-none border-[#D3800D] px-3 placeholder-[#CB9A6F]"
                                     placeholder="Enter password" />
                             </div>
@@ -78,7 +108,8 @@ const toggleForm = async () => {
                                     ?</span>
                             </div>
                             <button
-                                class="w-full mt-4 py-2 rounded-sm bg-[#E58825] text-[16px] text-white font-[Roboto] font-light cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#B56918]">LOGIN</button>
+                                class="w-full mt-4 py-2 rounded-sm bg-[#E58825] text-[16px] text-white font-[Roboto] font-light cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#B56918]"
+                                @click="loginProcess">LOGIN</button>
                             <span
                                 class="w-full my-3 text-[13px] text-[#D77600] font-medium font-[Quicksand] text-center duration-300 transition-all ease-in-out hover:text-[#9E5D0D] cursor-pointer"
                                 @click="toggleForm">If
@@ -116,7 +147,7 @@ const toggleForm = async () => {
                                 <AnOutlinedUser
                                     class="absolute left-3 top-1/2 -translate-y-1/2 text-[#CB9A6F] w-5 h-5" />
 
-                                <input type="text"
+                                <input type="text" v-model="name"
                                     class="w-full py-2 pl-10 rounded-sm font-normal bg-[rgba(199,141,80,0.19)] border outline-none border-[#D3800D] px-3 placeholder-[#CB9A6F]"
                                     placeholder="Enter full name" />
                             </div>
@@ -127,7 +158,7 @@ const toggleForm = async () => {
                                 <MdOutlinedEmail
                                     class="absolute left-3 top-1/2 -translate-y-1/2 text-[#CB9A6F] w-5 h-5" />
 
-                                <input type="email"
+                                <input type="email" v-model="email"
                                     class="w-full py-2 pl-10 rounded-sm font-normal bg-[rgba(199,141,80,0.19)] border outline-none border-[#D3800D] px-3 placeholder-[#CB9A6F]"
                                     placeholder="Enter email address" />
                             </div>
@@ -137,7 +168,7 @@ const toggleForm = async () => {
                             <div class="relative w-full">
                                 <BsTelephone class="absolute left-3 top-1/2 -translate-y-1/2 text-[#CB9A6F] w-5 h-5" />
 
-                                <input type="text"
+                                <input type="text" 
                                     class="w-full py-2 pl-10 rounded-sm font-normal bg-[rgba(199,141,80,0.19)] border outline-none border-[#D3800D] px-3 placeholder-[#CB9A6F]"
                                     placeholder="Enter mobile number" />
                             </div>
@@ -149,7 +180,7 @@ const toggleForm = async () => {
                                 <AnOutlinedLock
                                     class="absolute left-3 top-1/2 -translate-y-1/2 text-[#CB9A6F] w-5 h-5" />
 
-                                <input type="password"
+                                <input type="password" v-model="password"
                                     class="w-full py-2 pl-10 rounded-sm font-normal bg-[rgba(199,141,80,0.19)] border outline-none border-[#D3800D] px-3 placeholder-[#CB9A6F]"
                                     placeholder="Create password" />
                             </div>
@@ -162,23 +193,12 @@ const toggleForm = async () => {
                             </div>
 
                             <button
-                                class="w-full mt-4 py-2 rounded-sm bg-[#E58825] text-[16px] text-white font-[Roboto] font-light cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#B56918]">REGISTER</button>
+                                class="w-full mt-4 py-2 rounded-sm bg-[#E58825] text-[16px] text-white font-[Roboto] font-light cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#B56918]"
+                                @click="registerProcess">REGISTER</button>
                             <span
                                 class="w-full my-3 text-[13px] text-[#D77600] font-medium font-[Quicksand] text-center duration-300 transition-all ease-in-out hover:text-[#9E5D0D] cursor-pointer"
                                 @click="toggleForm">If
                                 you have already an account ?</span>
-
-                            <!-- <div class="w-full flex flex-col items-center">
-                                <div class="w-full flex flex-col items-center">
-                                    <div class="w-[140px] h-[1px] bg-[#d3a05898] my-3"></div>
-                                    <span class="text-[#D77600] text-[14px] font-medium font-[Quicksand]">OR</span>
-                                </div>
-                                <div class="w-fit flex flex-row items-center justify-center gap-5 py-3">
-                                    <DeGoogleOriginal class="w-8 h-8 object-cover" />
-                                    <DeFacebookPlain class="w-8 h-8 object-cover" />
-                                    <DeLinkedinOriginal class="w-8 h-8 object-cover" />
-                                </div>
-                            </div> -->
                         </div>
                     </div>
 
@@ -187,31 +207,3 @@ const toggleForm = async () => {
         </div>
     </div>
 </template>
-
-
-<!-- <style>
-.slide-fade-enter-from {
-    transform: translateX(200px);
-    opacity: 0;
-}
-
-.slide-fade-enter-to {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-.slide-fade-leave-from {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-.slide-fade-leave-to {
-    transform: translateX(-200px);
-    opacity: 0;
-}
-
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-    transition: all 0.5s ease;
-}
-</style> -->

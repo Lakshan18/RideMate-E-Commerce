@@ -21,6 +21,7 @@
     "@nuxt/ui": "^4.0.0",
     "@tailwindcss/vite": "^4.1.13",
     "@unhead/vue": "^2.0.17",
+    "axios": "^1.12.2",
     "better-sqlite3": "^12.4.1",
     "eslint": "^9.36.0",
     "gsap": "^3.13.0",
