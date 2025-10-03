@@ -1,14 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-// output   = "../generated/prisma"
-
-
 generator client {
   provider = "prisma-client-js"
- 
 }
 
 datasource db {
@@ -16,11 +7,459 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+// =========================
+// Enums
+// =========================
+enum UserStatus {
+  Activated
+  Deactivated
+}
+
+enum TwoFA {
+  ON
+  OFF
+}
+
+enum PaymentOption {
+  PayHere
+  Stripe
+  G_Pay   @map("G-Pay")
+  PayPal
+}
+
+enum YesNo {
+  Yes
+  No
+}
+
+enum CardMethod {
+  Credit_Card @map("Credit Card")
+  Debit_Card  @map("Debit Card")
+}
+
+enum CardBrand {
+  Visa
+  Master_Card @map("Master-Card")
+}
+
+enum OrdersPaymentStatus {
+  Pending
+  Completed
+  Cancelled
+}
+
+enum PaymentsStatus {
+  Pending
+  Success
+  Failed
+}
+
+enum OrderStatus {
+  Pending
+  On_going  @map("On-going")
+  Delivered
+  Cancelled
+  Return
+}
+
+enum SupplierStatus {
+  Active
+  Inactive
+}
+
+enum PurchaseStatus {
+  Pending
+  Approved
+  Cancelled
+}
+
+enum GRNStatus {
+  Pending
+  Received
+  Rejected
+}
+
+// =========================
+// Tables / Models
+// =========================
+
+model Users {
+  id         Int        @id @default(autoincrement())
+  name       String     @db.VarChar(100)
+  email      String     @unique @db.VarChar(100)
+  mobile     String     @unique @db.VarChar(10)
+  password   String     @db.VarChar(100)
+  createdAt  DateTime
+  status     UserStatus @default(Activated)
+  profile_id Int?
+  profile    profiles?  @relation(fields: [profile_id], references: [id])
+  twofa      TwoFA      @default(OFF) @map("2fa")
+
+  user_has_address    user_has_address[]
+  question_has_answer question_has_answer[]
+  Billing             Billing[]
+  orders              orders[]
+  cart                cart[]
+  wishlist            wishlist[]
+
+  @@map("Users")
+}
+
+model profiles {
+  id   Int    @id @default(autoincrement())
+  path String @db.VarChar(100)
+
+  Users Users[]
+
+  @@map("profiles")
+}
+
+model address {
+  id             Int    @id @default(autoincrement())
+  street_address String @db.VarChar(100)
+  city_id        Int
+  province_id    Int
+  postal_code    Int
+
+  City             City               @relation(fields: [city_id], references: [id])
+  Province         Province           @relation(fields: [province_id], references: [id])
+  user_has_address user_has_address[]
+
+  @@map("address")
+}
+
+model City {
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.VarChar(30)
+
+  address address[]
+
+  @@map("City")
+}
+
+model Province {
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.VarChar(30)
+
+  address address[]
+
+  @@map("Province")
+}
+
+model user_has_address {
+  id         Int @id @default(autoincrement())
+  user_id    Int
+  address_id Int
+
+  Users   Users   @relation(fields: [user_id], references: [id])
+  address address @relation(fields: [address_id], references: [id])
+
+  @@map("user_has_address")
+}
+
+model recovery_option {
+  id         Int     @id @default(autoincrement())
+  opt_mobile String? @unique @db.VarChar(10)
+  opt_email  String? @unique @db.VarChar(100)
+
+  question_has_answer question_has_answer[]
+
+  @@map("recovery_option")
+}
+
+model questions {
+  id   Int    @id @default(autoincrement())
+  quiz String @unique @db.VarChar(100)
+
+  question_has_answer question_has_answer[]
+
+  @@map("questions")
+}
+
+model question_has_answer {
+  id              Int @id @default(autoincrement())
+  recovery_opt_id Int
+  question_id     Int
+  user_id         Int
+
+  recovery_option recovery_option @relation(fields: [recovery_opt_id], references: [id])
+  question        questions       @relation(fields: [question_id], references: [id])
+  Users           Users           @relation(fields: [user_id], references: [id])
+
+  @@map("question_has_answer")
+}
+
+model Billing {
+  id              Int           @id @default(autoincrement())
+  payment_opt     PaymentOption @default(PayHere)
+  is_card_payment YesNo
+  card_pay_id     Int?          @unique
+  user_id         Int
+
+  card_payment card_payment? @relation(fields: [card_pay_id], references: [id])
+  Users        Users         @relation(fields: [user_id], references: [id])
+
+  @@map("Billing")
+}
+
+model card_payment {
+  id         Int         @id @default(autoincrement())
+  pay_method CardMethod?
+  card_type  CardBrand?
+  card_no    Int
+  expiry     DateTime
+  cvc_no     Int
+
+  Billing Billing[]
+
+  @@map("card_payment")
+}
+
+model category {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(30)
+
+  products products[]
+
+  @@map("category")
+}
+
+model brand {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(30)
+
+  brand_has_model brand_has_model[]
+
+  @@map("brand")
+}
+
+model VehicleModel {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(30)
+
+  brand_has_model brand_has_model[]
+
+  @@map("model")
+}
+
+model brand_has_model {
+  id       Int @id @default(autoincrement())
+  brand_id Int
+  model_id Int
+
+  brand_ref brand        @relation(fields: [brand_id], references: [id])
+  model_ref VehicleModel @relation(fields: [model_id], references: [id])
+
+  products products[]
+
+  @@map("brand_has_model")
+}
+
+model product_img {
+  id   Int    @id @default(autoincrement())
+  path String @db.VarChar(100)
+
+  products products[]
+
+  @@map("product_img")
+}
+
+model product_specs {
+  id           Int     @id @default(autoincrement())
+  desc         String?
+  rating       Int?
+  sizes        Int?
+  vehicle_type String?
+  volumes      String?
+  usage        String?
+  spec         String?
+
+  products products[]
+
+  @@map("product_specs")
+}
+
+model products {
+  id                 Int     @id @default(autoincrement())
+  product_name       String  @db.VarChar(60)
+  category_id        Int
+  brand_has_model_id Int
+  qty                Int
+  price              Decimal @db.Decimal(19, 2)
+  is_sale            YesNo?  @default(No)
+  spec_id            Int
+  product_img_id     Int
+
+  category        category        @relation(fields: [category_id], references: [id])
+  brand_has_model brand_has_model @relation(fields: [brand_has_model_id], references: [id])
+  specs           product_specs   @relation(fields: [spec_id], references: [id])
+  image           product_img     @relation(fields: [product_img_id], references: [id])
+
+  order_items          order_items[]
+  purchase_order_items purchase_order_items[]
+  grn_items            grn_items[]
+  cart_items           cart_items[]
+  wishlist_items       wishlist_items[]
+
+  @@map("products")
+}
+
+model orders {
+  id             Int                 @id @default(autoincrement())
+  user_id        Int
+  payment        Decimal             @db.Decimal(19, 2)
+  payment_status OrdersPaymentStatus @default(Pending)
+  date_time      DateTime
+  order_status   OrderStatus         @default(Pending)
+
+  Users       Users         @relation(fields: [user_id], references: [id])
+  order_items order_items[]
+  invoice     invoice[]
+  payments    payments[]
+
+  @@map("orders")
+}
+
+model order_items {
+  id         Int     @id @default(autoincrement())
+  order_id   Int
+  product_id Int
+  qty        Int
+  price      Decimal @db.Decimal(19, 2)
+
+  orders   orders   @relation(fields: [order_id], references: [id])
+  products products @relation(fields: [product_id], references: [id])
+
+  @@map("order_items")
+}
+
+model invoice {
   id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  mobile    String   @unique
-  password  String
+  order_id  Int
+  createdAt DateTime
+
+  orders orders @relation(fields: [order_id], references: [id])
+
+  @@map("invoice")
+}
+
+model payments {
+  id        Int            @id @default(autoincrement())
+  order_id  Int
+  amount    Decimal        @db.Decimal(19, 2)
+  method    PaymentOption
+  status    PaymentsStatus @default(Pending)
+  createdAt DateTime
+
+  orders orders @relation(fields: [order_id], references: [id])
+
+  @@map("payments")
+}
+
+model suppliers {
+  id      Int            @id @default(autoincrement())
+  name    String         @db.VarChar(100)
+  email   String?        @unique @db.VarChar(100)
+  mobile  String?
+  address String?
+  status  SupplierStatus @default(Active)
+
+  purchase_order purchase_order[]
+
+  @@map("suppliers")
+}
+
+model purchase_order {
+  id          Int            @id @default(autoincrement())
+  supplier_id Int
+  date_time   DateTime
+  status      PurchaseStatus @default(Pending)
+
+  suppliers            suppliers              @relation(fields: [supplier_id], references: [id])
+  purchase_order_items purchase_order_items[]
+  grn                  grn[]
+
+  @@map("purchase_order")
+}
+
+model purchase_order_items {
+  id                Int     @id @default(autoincrement())
+  purchase_order_id Int
+  product_id        Int
+  qty               Int
+  unit_price        Decimal @db.Decimal(19, 2)
+
+  purchase_order purchase_order @relation(fields: [purchase_order_id], references: [id])
+  products       products       @relation(fields: [product_id], references: [id])
+
+  @@map("purchase_order_items")
+}
+
+model grn {
+  id                Int       @id @default(autoincrement())
+  purchase_order_id Int
+  received_date     DateTime
+  status            GRNStatus @default(Pending)
+
+  purchase_order purchase_order @relation(fields: [purchase_order_id], references: [id])
+  grn_items      grn_items[]
+
+  @@map("grn")
+}
+
+model grn_items {
+  id           Int @id @default(autoincrement())
+  grn_id       Int
+  product_id   Int
+  received_qty Int
+
+  grn      grn      @relation(fields: [grn_id], references: [id])
+  products products @relation(fields: [product_id], references: [id])
+
+  @@map("grn_items")
+}
+
+model cart {
+  id        Int      @id @default(autoincrement())
+  user_id   Int
   createdAt DateTime @default(now())
+
+  Users      Users        @relation(fields: [user_id], references: [id])
+  cart_items cart_items[]
+
+  @@map("cart")
+}
+
+model cart_items {
+  id         Int @id @default(autoincrement())
+  cart_id    Int
+  product_id Int
+  qty        Int @default(1)
+
+  cart     cart     @relation(fields: [cart_id], references: [id])
+  products products @relation(fields: [product_id], references: [id])
+
+  @@map("cart_items")
+}
+
+model wishlist {
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  createdAt DateTime @default(now())
+
+  Users          Users            @relation(fields: [user_id], references: [id])
+  wishlist_items wishlist_items[]
+
+  @@map("wishlist")
+}
+
+model wishlist_items {
+  id          Int @id @default(autoincrement())
+  wishlist_id Int
+  product_id  Int
+
+  wishlist wishlist @relation(fields: [wishlist_id], references: [id])
+  products products @relation(fields: [product_id], references: [id])
+
+  @@map("wishlist_items")
 }
