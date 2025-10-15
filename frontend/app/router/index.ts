@@ -1,8 +1,9 @@
-import { createRouter, createWebHistory} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router';
 
 import Index from '~/pages/index.vue';
 import Authentication from '~/pages/Authentication.vue';
+import MyAccount from '~/pages/MyAccount.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -14,6 +15,11 @@ const routes: RouteRecordRaw[] = [
     path: '/auth',
     name: 'Authentication',
     component: Authentication,
+  },
+  {
+    path: '/myacc',
+    name: 'MyAccount',
+    component: MyAccount,
   },
 ];
 

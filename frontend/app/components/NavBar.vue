@@ -6,6 +6,8 @@ import { ref } from 'vue';
 
 type StyleKey = keyof typeof styles;
 
+const router = useRouter();
+
 const navigationItems = ref(navItems);
 
 const handleNavClick = (item: NavItem) => {
@@ -19,6 +21,11 @@ const handleNavClick = (item: NavItem) => {
 const getStyleClass = (className: string) => {
    return styles[className as StyleKey];
 }
+
+const goToMyAccount = () => {
+   router.push({name:'MyAccount'});
+}
+
 </script>
 
 <template>
@@ -27,7 +34,7 @@ const getStyleClass = (className: string) => {
          <!-- Top Bar -->
          <div class="flex flex-row items-center justify-between mb-3.5">
             <div class="w-fit flex flex-row items-center justify-between gap-x-2">
-               <span :class="[styles.nav_topText]">My Account</span>
+               <span :class="[styles.nav_topText]" @click="goToMyAccount">My Account</span>
                <div class="bg-[#6a6a6a] w-[1px] h-[20px]"></div>
                <span :class="[styles.nav_topText]">Cart</span>
             </div>
